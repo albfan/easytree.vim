@@ -20,11 +20,14 @@ syntax match EasyTreeRoot /\%1l.*/
 syntax match EasyTreeRootUp /\%2l.*/
 syntax match EasyTreeDir /^\%>2l\s*[▸▾+-] .*$/
 syntax match EasyTreeFile /^\%>2l\s*[^▸▾+-]*$/
+syntax match EasyTreeFlags #^ *\zs\[.\]# containedin=EasyTreeFile
+syntax match EasyTreeFlags #\[.\]# containedin=EasyTreeDir
 
 highlight default link EasyTreeRoot   Operator
 highlight default link EasyTreeRootUp Title
 highlight default link EasyTreeDir    Identifier
 highlight default link EasyTreeFile   Normal
+highlight default link EasyTreeFlags  Number
 
 let b:current_syntax = "easytree"
 

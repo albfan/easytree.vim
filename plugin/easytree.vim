@@ -102,6 +102,22 @@ endif
 if !exists("g:easytree_toggle_win")
     let g:easytree_toggle_win = 'left'
 endif
+
+if !exists('s:EasyTreeIndicatorMap')
+    let s:EasyTreeIndicatorMap = {
+                \ 'Modified'  : '✹',
+                \ 'Staged'    : '✚',
+                \ 'Untracked' : '✭',
+                \ 'Renamed'   : '➜',
+                \ 'Unmerged'  : '═',
+                \ 'Deleted'   : '✖',
+                \ 'Dirty'     : '✗',
+                \ 'Clean'     : '✔︎',
+                \ 'Ignored'   : '☒',
+                \ 'Unknown'   : '?'
+                \ }
+endif
+
 " }}}
 
 " commands {{{
@@ -127,9 +143,49 @@ function! s:DisableFileExplorer()
     au! FileExplorer
 endfunction
 
+function! s:TreeGetIndicator(statusKey)
+    let l:indicator = get(s:EasyTreeIndicatorMap, a:statusKey, '')
+    if l:indicator !=# ''
+        return l:indicator
+    endif
+    return ''
+endfunction
+
+" status highlight {{{
+function! s:AddHighlighting()
+    let l:synmap = {
+                \ 'EasyTreeGitStatusModified'    : s:TreeGetIndicator('Modified'),
+                \ 'EasyTreeGitStatusStaged'      : s:TreeGetIndicator('Staged'),
+                \ 'EasyTreeGitStatusUntracked'   : s:TreeGetIndicator('Untracked'),
+                \ 'EasyTreeGitStatusRenamed'     : s:TreeGetIndicator('Renamed'),
+                \ 'EasyTreeGitStatusUnmerged'    : s:TreeGetIndicator('Unmerged'),
+                \ 'EasyTreeGitStatusDeleted'     : s:TreeGetIndicator('Deleted'),
+                \ 'EasyTreeGitStatusDirDirty'    : s:TreeGetIndicator('Dirty'),
+                \ 'EasyTreeGitStatusDirClean'    : s:TreeGetIndicator('Clean'),
+                \ 'EasyTreeGitStatusIgnored'     : s:TreeGetIndicator('Ignored'),
+                \ 'EasyTreeGitStatusUnknown'     : s:TreeGetIndicator('Unknown')
+                \ }
+
+    for l:name in keys(l:synmap)
+        exec 'syn match ' . l:name . ' #' . escape(l:synmap[l:name], '~') . '# containedin=EasyTreeFlags'
+    endfor
+
+    highlight default EasyTreeGitStatusModified term=standout ctermfg=121 gui=bold guifg=Orange
+    highlight default EasyTreeGitStatusStaged term=standout ctermfg=122 gui=bold guifg=Yellow
+    highlight default EasyTreeGitStatusRenamed term=standout ctermfg=123 gui=bold guifg=Purple
+    highlight default EasyTreeGitStatusUnmerged term=standout ctermfg=124 gui=bold guifg=Blue
+    highlight default EasyTreeGitStatusUntracked term=standout ctermfg=125 gui=bold guifg=Brown
+    highlight default EasyTreeGitStatusDirDirty term=standout ctermfg=126 gui=bold guifg=Orange
+    highlight default EasyTreeGitStatusDirClean term=standout ctermfg=127 gui=bold guifg=White
+    " TODO: use diff color
+    highlight default EasyTreeGitStatusIgnored term=standout ctermfg=128 gui=bold guifg=Gray
+endfunction
+" }}}
+
 augroup EasyTree
     autocmd VimEnter * if g:easytree_hijack_netrw | call <SID>DisableFileExplorer() | endif
     autocmd BufEnter * if g:easytree_hijack_netrw | call <SID>OpenDirHere(expand('<amatch>')) | endif
+    autocmd FileType easytree call <SID>AddHighlighting()
 augroup end
 " }}}
 
