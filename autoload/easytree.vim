@@ -1321,6 +1321,19 @@ endfunction
 " }}}
 
 " global functions {{{
+function! easytree#Focus()
+    let win = g:easytree_toggle_win
+    if win =~ 'double'
+        let win = split(win, ' ')[0]
+    endif
+    let bnrlist = filter(range(1,bufnr("$")), "bufexists(v:val) && getbufvar(v:val,'&filetype') == 'easytree' && getbufvar(v:val,'location') == '".win."'")
+    if len(bnrlist) != 0
+        for bnr in bnrlist
+            silent! exe bufwinnr(bnr).'wincmd w'
+        endfor
+    endif
+endfunction
+
 function! easytree#ToggleTree(win, dir)
     if a:win == 'edit here'
         if &filetype == 'easytree'

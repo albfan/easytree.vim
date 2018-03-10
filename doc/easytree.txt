@@ -216,4 +216,8 @@ g:easytree_width_auto_fit   (Default: 0)
 :EasyTreeBottomDouble [directory path]
     Opens two easy tree windows side by side at the bottom
 
+                                                                  *EasyTreeFocus*
+:EasyTreeFocus
+    Focus on EasyTree |g:easytree_toggle_win| window
+
  vim:tw=78:ts=8:ft=help:norl:

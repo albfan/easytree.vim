@@ -130,6 +130,7 @@ command! -nargs=? -complete=dir EasyTreeTop call easytree#OpenTree('top',<q-args
 command! -nargs=? -complete=dir EasyTreeBottom call easytree#OpenTree('bottom',<q-args>)
 command! -nargs=? -complete=dir EasyTreeTopDouble call easytree#OpenTree('top double',<q-args>)
 command! -nargs=? -complete=dir EasyTreeBottomDouble call easytree#OpenTree('bottom double',<q-args>)
+command! EasyTreeFocus call easytree#Focus()
 " }}}
 
 " netrw hijacking related functions {{{
