@@ -452,6 +452,11 @@ function! s:RemoveFile(linen)
     endfor
 endfunction
 
+function! s:ToggleOpenBuffers()
+    let g:ShowOpenBuffers = !g:ShowOpenBuffers
+    call s:RefreshAll()
+endfunction
+
 function! s:ToggleVcsIgnore()
     let g:ShowVcsIgnored = !g:ShowVcsIgnored
     call s:RefreshAll()
@@ -924,8 +929,9 @@ endfunction
 " }}}
 
 function! s:Show_path(path, root, isDir)
-    return (g:OnlyTouched == 0 || s:IsPathTouched(a:path, a:root, a:isDir) == 1)
-                \ && (g:ShowVcsIgnored == 1 || s:IsPathIgnored(a:path, a:root, a:isDir) == 0)
+    return ((g:OnlyTouched == 0 || s:IsPathTouched(a:path, a:root, a:isDir) == 1)
+                \ && (g:ShowVcsIgnored == 1 || s:IsPathIgnored(a:path, a:root, a:isDir) == 0))
+                \ || (g:ShowOpenBuffers == 1 && s:IsOpenBuffer(a:path, a:root, a:isDir) == 1)
 endfunction
 
 function! s:Format_dir(dir, root)
@@ -947,6 +953,7 @@ endfunction
 
 let g:OnlyTouched = 0
 let g:ShowVcsIgnored = 0
+let g:ShowOpenBuffers = 0
 
 " easytree window functions {{{
 function! s:InitializeTree(dir)
@@ -1101,6 +1108,16 @@ endfunction
 function! s:IsPathIgnored(path, root, isDirectory)
     let l:statusPrefix = g:TreeGetGitStatusPrefix(a:root.s:easytree_path_sep.a:path, a:isDirectory)
     return l:statusPrefix == s:TreeGetIndicator('Ignored')
+endfunction
+
+function! s:IsOpenBuffer(path, root, isDirectory)
+    let buffernames = map(filter(range(1,bufnr("$")), 'bufexists(v:val)'), 'bufname(v:val)')
+    if a:isDirectory
+      let buffers = map(filter(buffernames, 'v:val."/" =~ a:path'), 'v:val')
+    else
+      let buffers = map(filter(buffernames, 'v:val =~ a:path."$"'), 'v:val')
+    endif
+    return ! empty(buffers)
 endfunction
 
 function! s:InitializeNewTree(dir)
@@ -1475,6 +1492,7 @@ function! easytree#OpenTree(win, dir)
     vnoremap <silent> <buffer> d :call <SID>RemoveFiles()<CR>
     nnoremap <silent> <buffer> fs :call <SID>FilterStatus()<CR>
     nnoremap <silent> <buffer> fi :call <SID>ToggleVcsIgnore()<CR>
+    nnoremap <silent> <buffer> fo :call <SID>ToggleOpenBuffers()<CR>
     call s:InitializeNewTree(dir)
 endfunction
 " }}}
