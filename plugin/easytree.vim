@@ -132,6 +132,7 @@ command! -nargs=? -complete=dir EasyTreeTopDouble call easytree#OpenTree('top do
 command! -nargs=? -complete=dir EasyTreeBottomDouble call easytree#OpenTree('bottom double',<q-args>)
 command! EasyTreeFocus call easytree#Focus()
 command! EasyTreeLocateCurrentFile call easytree#LocateFile(expand('%:p'))
+command! EasyTreeRefreshAll call easytree#RefreshAll()
 " }}}
 
 " netrw hijacking related functions {{{

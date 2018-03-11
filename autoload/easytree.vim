@@ -1378,9 +1378,14 @@ function! easytree#ToggleTree(win, dir)
     endif
 endfunction
 
+function! easytree#RefreshAll()
+    call easytree#Focus()
+    call s:RefreshAll()
+endfunction
+
 function! easytree#LocateFile(filename)
     call easytree#Focus()
-    call <SID>LocateFile(a:filename)
+    call s:LocateFile(a:filename)
 endfunction
 
 function! easytree#OpenTree(win, dir)

@@ -224,4 +224,8 @@ g:easytree_width_auto_fit   (Default: 0)
 :EasyTreeLocateCurrentFile
     Locate current file in EasyTree |g:easytree_toggle_win| window
 
+                                                             *EasyTreeRefreshAll*
+:EasyTreeRefreshAll
+    Refresh tree on EasyTree |g:easytree_toggle_win| window
+
  vim:tw=78:ts=8:ft=help:norl:
