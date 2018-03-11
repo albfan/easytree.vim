@@ -590,6 +590,24 @@ function! s:Refresh(linen)
     endif
 endfunction
 
+function! s:LocateFile(filename)
+    let fpath = s:GetFullPathDir(1)
+    if a:filename =~ fpath
+        let filename = substitute(a:filename, fpath."/", "", "")
+        exe "let b:findresult = pyeval(\"easytree.EasyTreeFind(vim.eval('filename'),vim.eval('fpath'),".b:showhidden.")\")"
+        if !empty(b:findresult)
+            echo ''
+            let b:findindex = -1
+            let @/ = ''
+            call s:FindNext()
+        else
+            echo 'no files found'
+        endif
+    else
+        echo 'file not under EasyTree path'
+    endif
+endfunction
+    
 function! s:Find(linen, find)
     let linen = a:linen
     if linen == 2
@@ -1358,6 +1376,11 @@ function! easytree#ToggleTree(win, dir)
             silent! exe wn.'wincmd w'
         endif
     endif
+endfunction
+
+function! easytree#LocateFile(filename)
+    call easytree#Focus()
+    call <SID>LocateFile(a:filename)
 endfunction
 
 function! easytree#OpenTree(win, dir)

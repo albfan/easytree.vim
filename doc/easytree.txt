@@ -220,4 +220,8 @@ g:easytree_width_auto_fit   (Default: 0)
 :EasyTreeFocus
     Focus on EasyTree |g:easytree_toggle_win| window
 
+                                                             *EasyTreeLocateCurrentFile*
+:EasyTreeLocateCurrentFile
+    Locate current file in EasyTree |g:easytree_toggle_win| window
+
  vim:tw=78:ts=8:ft=help:norl:
