@@ -114,6 +114,10 @@ g:easytree_width_auto_fit   (Default: 0)
     if this option is enabled width of easytree window will be automaticly
     resized if the longest line width will be greater than the easytree window width
 
+                                                         *g:easytree_flag_format*
+g:easytree_flag_format      (Default: '[%s]%s')
+    This defines the format to render flags for an item
+
 ============================================================================================
  2. USAGE                                                         *easytree.vim-usage*
 

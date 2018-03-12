@@ -118,6 +118,10 @@ if !exists('s:EasyTreeIndicatorMap')
                 \ }
 endif
 
+if !exists("g:easytree_flag_format")
+    let g:easytree_flag_format = '[%s]%s'
+endif
+
 " }}}
 
 " commands {{{

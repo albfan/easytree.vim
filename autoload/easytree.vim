@@ -182,7 +182,7 @@ function! s:GetFullPath(linen)
 endfunction
 
 function! s:GetLineRemoveFlag(linen)
-    return substitute(getline(a:linen),'\[.\]', '', '')
+    return substitute(getline(a:linen), printf('\(^\s*[▸▾+\-] \)%s', repeat('.',len(printf(g:easytree_flag_format,'.','')))), '\1', '')
 endfunction
 
 function! s:DirName(path)
@@ -937,7 +937,7 @@ endfunction
 function! s:Format_dir(dir, root)
     let l:flag = g:TreeGetGitStatusPrefix(a:root.s:easytree_path_sep.a:dir, 1)
     if (l:flag != '')
-        return '['.l:flag.']'.a:dir
+        return printf(g:easytree_flag_format, l:flag, a:dir)
     endif
     return a:dir
 endfunction
@@ -945,7 +945,7 @@ endfunction
 function! s:Format_file(file, root)
     let l:flag = g:TreeGetGitStatusPrefix(a:root.s:easytree_path_sep.a:file, 0)
     if (l:flag != '')
-        return '['.l:flag.']'.a:file
+        return printf(g:easytree_flag_format, l:flag, a:file)
     endif
     return a:file
 endfunction
